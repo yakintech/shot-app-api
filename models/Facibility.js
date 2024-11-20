@@ -13,6 +13,7 @@ const FacibilitySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'City'
     },
+    image: String,
     isDeleted: {
         type: Boolean,
         default: false

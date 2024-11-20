@@ -23,7 +23,11 @@ const facibilityController = {
     create: async (req, res) => {
         try {
             var data = req.body;
-            var facibility = new Facibility(data);
+            const file = req.file;
+            var facibility = new Facibility({
+                ...data,
+                image: file.path
+            });
             await facibility.save();
             return res.json({ id: facibility._id });
         } catch (error) {
