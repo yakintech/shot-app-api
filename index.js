@@ -10,7 +10,7 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const authRoutes = require('./routes/authRoutes');
 const adminUserRoutes = require('./routes/adminUserRoutes');
 const facibilityRoutes = require('./routes/facibilityRoutes');
-const AdminUser = require('./models/AdminUser');
+const webUserRoutes = require('./routes/webUserRoutes');
 
 app.use(cookieParser())
 app.use(cors({
@@ -28,6 +28,7 @@ const PORT = process.env.PORT || 5001;
 app.use("/api/auth",authRoutes);
 app.use("/api/adminusers", adminUserRoutes)
 app.use("/api/facibilities", facibilityRoutes);
+app.use("/api/webUsers", webUserRoutes);
 
 
 app.get("/api/check", authMiddleware, (req, res) => {
