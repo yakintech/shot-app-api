@@ -4,7 +4,7 @@ const WebUser = require("../models/WebUser");
 const webUserController = {
     getAll: async (req, res) => {
         try {
-            var data = await WebUser.find({ isDeleted: false }).populate('city');
+            var data = await WebUser.find({ isDeleted: false }).populate('city').populate('posts');;
            return res.json(data);
         } catch (error) {
             return res.status(500).json({ message: error.message });
