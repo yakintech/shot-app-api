@@ -16,6 +16,14 @@ const PostSchema = new mongoose.Schema({
     ref: 'WebUser',
     required: true,
   },
+  likedBy: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'WebUser',
+  }],
+  likeCount:{
+    type: Number,
+    default: 0,
+  },
   isDeleted: {
     type: Boolean,
     default: false,
