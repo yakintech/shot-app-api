@@ -6,11 +6,7 @@ exports.createPost = async (req, res) => {
     const { userId, content } = req.body;
     const user = await WebUser.findOne({ supabaseId: userId });
 
-    const attachUrl = req.file
-      ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
-      : null;
-
-    const newPost = await Post.create({ content, attachUrl, user: user._id });
+    const newPost = await Post.create({ content, user: user._id });
 
     await WebUser.findOneAndUpdate(
       { supabaseId: userId },

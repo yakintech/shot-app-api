@@ -1,11 +1,12 @@
 const Facibility = require("../models/Facibility");
+const { uploadToAzureBlob } = require("../services/azureBlobService");
 
 
 const facibilityController = {
     getAll: async (req, res) => {
         try {
             var data = await Facibility.find({ isDeleted: false }).populate('city');
-           return res.json(data);
+            return res.json(data);
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }
@@ -23,14 +24,31 @@ const facibilityController = {
     create: async (req, res) => {
         try {
             var data = req.body;
-            const file = req.file;
+            const files = req.files;
+
+            if (!files || files.length === 0) {
+                return res.status(400).json({ message: "Image is required" });
+            }
+
+            let paths = [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.mimetype.startsWith("image")) {
+                    return res.status(400).json({ message: "Please upload an image file" });
+                }
+                const path = await uploadToAzureBlob("facibilities", file);
+                paths.push(path);
+            }
+
+
             var facibility = new Facibility({
                 ...data,
-                image: file.path
+                images: paths
             });
             await facibility.save();
             return res.json({ id: facibility._id });
         } catch (error) {
+            console.log(`Error creating facibility req.body:`, error);
             return res.status(500).json({ message: error.message });
         }
     },

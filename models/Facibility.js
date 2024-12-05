@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
 
-// name: name,
-// description: description,
-// address: address,
-// city: city
-
 const FacibilitySchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     description: String,
     address: String,
     city: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'City'
     },
-    image: String,
+    images: [],
     isDeleted: {
         type: Boolean,
         default: false

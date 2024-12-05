@@ -59,6 +59,12 @@ const WebUserSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
+    followFacibilities: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Facibility",
+      },
+    ],
   },
   {
     timestamps: true,

@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const postController = require("../controllers/postController");
-const multer = require('../middlewares/upload');
 
 router.get("/", postController.getAllPosts);
 router.get("/:id", postController.getUserPosts);
-router.post("/", multer.single("file"), postController.createPost);
+router.post("/", postController.createPost);
 
 module.exports = router;
