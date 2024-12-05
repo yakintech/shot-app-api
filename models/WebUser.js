@@ -1,7 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const WebUserSchema = new mongoose.Schema(
   {
+    supabaseId: {
+      type: String,
+      required:true
+    },
     firstName: {
       type: String,
     },
@@ -9,31 +13,31 @@ const WebUserSchema = new mongoose.Schema(
       type: String,
     },
     username: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      // required: true,
+      // unique: true,
     },
     birthDate: {
       type: Date,
     },
     city: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'City',
+      ref: "City",
     },
     image: String,
     position: {
       type: String,
       enum: [
-        'Goalkeeper',
-        'Right Back',
-        'Left Back',
-        'Center Back',
-        'Defensive Midfielder',
-        'Central Midfielder',
-        'Attacking Midfielder',
-        'Right Winger',
-        'Left Winger',
-        'Striker',
+        "Goalkeeper",
+        "Right Back",
+        "Left Back",
+        "Center Back",
+        "Defensive Midfielder",
+        "Central Midfielder",
+        "Attacking Midfielder",
+        "Right Winger",
+        "Left Winger",
+        "Striker",
       ],
     },
     email: {
@@ -43,7 +47,7 @@ const WebUserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      // required: true,
     },
     isDeleted: {
       type: Boolean,
@@ -52,7 +56,7 @@ const WebUserSchema = new mongoose.Schema(
     posts: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
+        ref: "Post",
       },
     ],
   },
@@ -61,4 +65,4 @@ const WebUserSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('WebUser', WebUserSchema);
+module.exports = mongoose.model("WebUser", WebUserSchema);

@@ -16,6 +16,10 @@ const PostSchema = new mongoose.Schema({
     ref: 'WebUser',
     required: true,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 PostSchema.pre('validate', function (next) {

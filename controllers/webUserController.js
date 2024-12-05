@@ -23,10 +23,10 @@ const webUserController = {
     create: async (req, res) => {
         try {
             var data = req.body;
-            const file = req.file;
+            const file = req?.file;
             var webUser = new WebUser({
                 ...data,
-                image: file.path
+                image: file?.path
             });
             await webUser.save();
             return res.json({ id: webUser._id });
