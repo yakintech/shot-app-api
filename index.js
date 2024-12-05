@@ -12,6 +12,7 @@ const facibilityRoutes = require('./routes/facibilityRoutes');
 const webUserRoutes = require('./routes/webUserRoutes');
 const postRoutes = require('./routes/postRoutes');
 const likeRoutes = require('./routes/likeRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 
 app.use(cookieParser())
 app.use(cors({
@@ -32,6 +33,7 @@ app.use("/api/facibilities", facibilityRoutes);
 app.use("/api/webUsers", webUserRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/likes', likeRoutes);
+app.use('/api/comments', commentRoutes);
 app.use('/uploads', express.static('uploads'));
 
 app.get("/api/check", authMiddleware, (req, res) => {
