@@ -17,7 +17,7 @@ const PostSchema = new mongoose.Schema({
     required: true,
   },
   likedBy: [{
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'WebUser',
   }],
   likeCount:{
