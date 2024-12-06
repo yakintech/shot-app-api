@@ -36,6 +36,9 @@ app.use('/api/likes', likeRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/uploads', express.static('uploads'));
 
+
+
+
 app.get("/api/check", authMiddleware, (req, res) => {
     res.send("ok");
 });

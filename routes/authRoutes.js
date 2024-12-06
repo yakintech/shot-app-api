@@ -88,5 +88,21 @@ router.post("/logout", async (req, res) => {
 })
 
 
+router.get("/google", (req,res) => {
+
+    console.log("req.body", req.body)
+    return res.send("OK!")
+
+})
+
+
+router.post("/google", (req,res) => {
+
+    console.log("req.body", req.body)
+    return res.send("OK!")
+
+})
+
+
 
 module.exports = router;
