@@ -49,6 +49,11 @@ const WebUserSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    loginType: {
+      type: String,
+      enum: ["email", "google", "facebook"],
+      default: "email",
+    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -65,6 +70,7 @@ const WebUserSchema = new mongoose.Schema(
         ref: "Facibility",
       },
     ],
+    userData: {} // for supabase user data
   },
   {
     timestamps: true,

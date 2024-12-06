@@ -21,17 +21,27 @@ const webUserController = {
             return res.status(500).json({ message: error.message });
         }
     },
-    create: async (req, res) => {
+    createWithSocial: async (req, res) => {
+
         try {
-            var data = req.body;
-            const file = req?.file;
+            var { loginType, email, supabaseId,userData } = req.body;
             var webUser = new WebUser({
-                ...data,
-                image: file?.path
+                loginType,
+                email,
+                supabaseId,
+                userData
             });
+
+
+            var existingUser = await WebUser.findOne({ email });
+            if (existingUser) {
+                return res.status(200).json({ message: "User with this email already exists" });
+            }
+
             await webUser.save();
             return res.json({ id: webUser._id });
         } catch (error) {
+            console.log("Error createWithSocial", error);
             return res.status(500).json({ message: error.message });
         }
     },
@@ -59,7 +69,7 @@ const webUserController = {
             }
 
             if (webUser.followFacibilities.includes(facibilityId)) {
-                return res.json({ id: webUser._id , message: "User is already following the facibility" });
+                return res.json({ id: webUser._id, message: "User is already following the facibility" });
             }
 
             webUser.followFacibilities.push(facibilityId);
