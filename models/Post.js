@@ -12,7 +12,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'WebUser',
     required: true,
   },

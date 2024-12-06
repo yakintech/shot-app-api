@@ -23,10 +23,13 @@ exports.createPost = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find()
+    let posts = await Post.find()
       .populate({
         path: "user",
-        select: "firstName lastName username image",
+        match: { supabaseId: { $exists: true } },
+        options: { strictPopulate: false },
+        localField: 'user',
+        foreignField: 'supabaseId'
       })
       .sort({ timestamp: -1 });
 
