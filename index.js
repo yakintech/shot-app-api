@@ -13,6 +13,7 @@ const webUserRoutes = require('./routes/webUserRoutes');
 const postRoutes = require('./routes/postRoutes');
 const likeRoutes = require('./routes/likeRoutes');
 const commentRoutes = require('./routes/commentRoutes');
+require('dotenv').config()
 
 app.use(cookieParser())
 app.use(cors({
