@@ -35,9 +35,11 @@ const webUserController = {
             });
 
 
+
+    
             var existingUser = await WebUser.findOne({ email });
+            console.log("existingUser", existingUser);
             if (existingUser) {
-                //supabaseId update et
                 existingUser.supabaseId = supabaseId;
                 await existingUser.save();
                 return res.status(200).json({ message: "User with this email already exists" });
