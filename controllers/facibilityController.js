@@ -33,9 +33,7 @@ const facibilityController = {
             let paths = [];
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                if (!file.mimetype.startsWith("image")) {
-                    return res.status(400).json({ message: "Please upload an image file" });
-                }
+     
                 const path = await uploadToAzureBlob("facibilities", file);
                 paths.push(path);
             }

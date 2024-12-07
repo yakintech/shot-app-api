@@ -2,7 +2,7 @@ const { BlobServiceClient } = require("@azure/storage-blob");
 const { v4: uuidv4 } = require("uuid");
 
 
-const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING
+const AZURE_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=shotapp;AccountKey=nMnR3gZfmsdNtVBubddN6X7GnU6K3C++5H1TELV1or3XBqOiPOoQ8sNN+pz4pec5fa849QcHwr/k+AStMx2rOA==;EndpointSuffix=core.windows.net"
 
 async function uploadToAzureBlob(folder, file) {
     const containerName = "uploads"
@@ -11,6 +11,7 @@ async function uploadToAzureBlob(folder, file) {
     try {
 
 
+        console.log("Uploading to Azure Blob",AZURE_STORAGE_CONNECTION_STRING);
         const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
         const containerClient = blobServiceClient.getContainerClient(containerName);
 
