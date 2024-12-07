@@ -46,13 +46,15 @@ exports.getAllPosts = async (req, res) => {
 exports.getUserPosts = async (req, res) => {
   try {
     var id = req.params.id;
-
-    const user = await WebUser.findOne({ supabaseId: id });
-
-    const posts = await Post.find({ user: user._id }).populate({
+    let posts = await Post.find({ user: id })
+    .populate({
       path: "user",
-      select: "firstName lastName username image",
-    });
+      match: { supabaseId: { $exists: true } },
+      options: { strictPopulate: false },
+      localField: 'user',
+      foreignField: 'supabaseId'
+    })
+    .sort({ timestamp: -1 });
 
     res.status(200).json(posts);
   } catch (error) {

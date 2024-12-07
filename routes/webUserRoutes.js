@@ -5,6 +5,7 @@ const router = express.Router();
 
 
 
+router.post("/", webUserController.createWithEmail);
 router.get("/", webUserController.getAll);
 router.get("/:id", webUserController.getOne);
 router.post("/createWithSocial", webUserController.createWithSocial);

@@ -6,6 +6,10 @@ const WebUserSchema = new mongoose.Schema(
       type: String,
       required:true
     },
+    isConfirmed: {
+      type: Boolean,
+      default: false,
+    },
     firstName: {
       type: String,
     },
@@ -54,7 +58,7 @@ const WebUserSchema = new mongoose.Schema(
     },
     loginType: {
       type: String,
-      enum: ["email", "google", "facebook"],
+      enum: ["email", "google", "facebook", "apple"],
       default: "email",
     },
     isDeleted: {

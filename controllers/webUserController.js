@@ -22,9 +22,8 @@ const webUserController = {
         }
     },
     createWithSocial: async (req, res) => {
-
         try {
-            var { loginType, email, supabaseId,userData } = req.body;
+            var { loginType, email, supabaseId, userData } = req.body;
             var webUser = new WebUser({
                 loginType,
                 email,
@@ -32,8 +31,9 @@ const webUserController = {
                 userData,
                 fullName: email.split("@")[0],
                 username: email.split("@")[0],
+                isConfirmed: true
             });
-            
+
 
             var existingUser = await WebUser.findOne({ email });
             if (existingUser) {
@@ -115,7 +115,12 @@ const webUserController = {
     getBySupabaseId: async (req, res) => {
         try {
             var supabaseId = req.params.id;
-            var data = await WebUser.findOne({ supabaseId });
+            var data = await WebUser.findOne({ supabaseId, isConfirmed: true });
+
+            if (!data) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
             let webUser = {
                 _id: data._id,
                 id: data.supabaseId,
@@ -129,6 +134,51 @@ const webUserController = {
             return res.status(500).json({ message: error.message });
         }
     },
+    createWithEmail: async (req, res) => {
+        try {
+            var { email, password, username, fullName, position, birthDate } = req.body;
+            var webUser = new WebUser({
+                email,
+                password,
+                username,
+                fullName,
+                position,
+                birthDate,
+            });
+
+            var existingUser = await WebUser.findOne({ email });
+            if (existingUser) {
+                return res.status(200).json({ message: "User with this email already exists" });
+            }
+
+            //username unique olmalı
+            var existingUser = await WebUser.findOne({ username });
+            if (existingUser) {
+                return res.status(200).json({ message: "User with this username already exists" });
+            }
+
+            await webUser.save();
+            return res.json({ id: webUser._id });
+        } catch (error) {
+            console.log("Error createWithEmail", error);
+            return res.status(500).json({ message: error.message });
+        }
+    },
+    confirmEmail: async (req, res) => {
+        let {id} = req.body;
+        try {
+            let webUser = await WebUser.findById({
+                supabaseId: id
+            })
+            if(!webUser){
+                return res.status(404).json({message: "User not found"})
+            }
+            webUser.isConfirmed = true;
+            await webUser.save();
+        } catch (error) {
+            
+        }
+    }
 }
 
 module.exports = webUserController;
