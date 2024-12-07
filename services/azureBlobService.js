@@ -9,7 +9,7 @@ async function uploadToAzureBlob(folder, file) {
     const accountName = "shotapp"
 
     try {
-
+        
 
         console.log("Uploading to Azure Blob",AZURE_STORAGE_CONNECTION_STRING);
         const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);

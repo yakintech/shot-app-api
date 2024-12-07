@@ -31,10 +31,13 @@ const webUserController = {
                 supabaseId,
                 userData
             });
-
+            
 
             var existingUser = await WebUser.findOne({ email });
             if (existingUser) {
+                //supabaseId update et
+                existingUser.supabaseId = supabaseId;
+                await existingUser.save();
                 return res.status(200).json({ message: "User with this email already exists" });
             }
 

@@ -6,9 +6,9 @@ const likeController = {
   addLike: async (req, res) => {
     const { postId, userId } = req.body;
 
-    try {
-      const user = await WebUser.findOne({ supabaseId: userId });
+    const user = await WebUser.findOne({ supabaseId: userId });
 
+    try {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -27,14 +27,10 @@ const likeController = {
         post.likeCount = (post.likeCount || 0) + 1;
         await post.save();
 
-        const populatedPost = await Post.findById(postId).populate({
-          path: "user",
-          select: "firstName lastName username image",
-        });
 
         return res
           .status(200)
-          .json({ message: "Post liked successfully", post: populatedPost });
+          .json({ message: "Post liked successfully", post: post._id });
       } else {
         return res.status(400).json({ message: "Post already liked" });
       }
@@ -67,18 +63,14 @@ const likeController = {
       }
 
       if (post.likedBy.includes(userId)) {
+        console.log("post.likedBy", post.likedBy);
         post.likedBy = post.likedBy.filter((id) => id !== userId);
         post.likeCount = Math.max(0, (post.likeCount || 1) - 1);
         await post.save();
 
-        const populatedPost = await Post.findById(postId).populate({
-          path: "user",
-          select: "firstName lastName username image",
-        });
-
         return res
           .status(200)
-          .json({ message: "Post unliked successfully", post: populatedPost });
+          .json({ message: "Post unliked successfully", post: post });
       } else {
         return res.status(400).json({ message: "Post not liked yet" });
       }
