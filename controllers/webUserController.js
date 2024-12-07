@@ -121,6 +121,9 @@ const webUserController = {
                 return res.status(404).json({ message: "User not found" });
             }
 
+          
+            let followersCount = await WebUser.countDocuments({ followUsers: { $in: [supabaseId] } });
+          
             let webUser = {
                 _id: data._id,
                 id: data.supabaseId,
@@ -128,6 +131,11 @@ const webUserController = {
                 userName: data.username,
                 createdAt: data.createdAt,
                 followUsers: data.followUsers,
+                followersCount: followersCount,
+                fullName: data.fullName,
+                createdAt: data.createdAt,
+                birthDate: data.birthDate,
+                position: data.position,
             }
             return res.json(webUser);
         } catch (error) {
@@ -183,7 +191,7 @@ const webUserController = {
     followUser: async (req, res) => {
         try {
             let { userId, followUserId } = req.body;
-            
+
             followUserId = followUserId.toString();
             userId = userId.toString();
 
@@ -193,7 +201,7 @@ const webUserController = {
                 return res.status(404).json({ message: "User not found" });
             }
 
-            var followUser = await WebUser.findOne({supabaseId: followUserId});
+            var followUser = await WebUser.findOne({ supabaseId: followUserId });
             if (!followUser) {
                 console.log("Follow user not found");
                 return res.status(404).json({ message: "Follow user not found" });
@@ -223,7 +231,7 @@ const webUserController = {
                 return res.status(404).json({ message: "User not found" });
             }
 
-            var followUser = await WebUser.findOne({supabaseId: followUserId});
+            var followUser = await WebUser.findOne({ supabaseId: followUserId });
             console.log("followUser", followUser);
             if (!followUser) {
                 return res.status(404).json({ message: "Follow user not found" });
@@ -240,6 +248,32 @@ const webUserController = {
             return res.status(500).json({ message: error.message });
         }
     },
+    updateProfile: async (req, res) => {  
+        console.log("req.body", req.body);
+
+        try {
+            let { email, fullName, birthDate, position, bio, username } = req.body;
+            let userId = req.params.id;
+
+            let webUser = await WebUser.findOne({ supabaseId: userId });
+            if (!webUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            webUser.email = email;
+            webUser.fullName = fullName;
+            webUser.birthDate = birthDate;
+            webUser.position = position;
+            webUser.bio = bio;
+            webUser.username = username
+            await webUser.save();
+            return res.json({ id: webUser._id, supabaseId: webUser.supabaseId });
+        }
+        catch (error) {
+            console.log(`Error updateProfile`, error);
+            return res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = webUserController;

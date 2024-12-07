@@ -32,21 +32,7 @@ const WebUserSchema = new mongoose.Schema(
       ref: "City",
     },
     image: String,
-    position: {
-      type: String,
-      enum: [
-        "Goalkeeper",
-        "Right Back",
-        "Left Back",
-        "Center Back",
-        "Defensive Midfielder",
-        "Central Midfielder",
-        "Attacking Midfielder",
-        "Right Winger",
-        "Left Winger",
-        "Striker",
-      ],
-    },
+    position:String,
     email: {
       type: String,
       required: true,

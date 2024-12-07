@@ -15,6 +15,7 @@ router.post("/unfollowFacibility", webUserController.unFollowFacibility);
 router.get("/getBySupabaseId/:id", webUserController.getBySupabaseId);
 router.post("/follow", webUserController.followUser)
 router.post("/unfollow", webUserController.unFollowUser)
+router.put("/:id", webUserController.updateProfile);
 
 
 module.exports = router;
