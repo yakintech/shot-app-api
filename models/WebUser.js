@@ -77,6 +77,12 @@ const WebUserSchema = new mongoose.Schema(
         ref: "Facibility",
       },
     ],
+    followUsers: [
+      {
+        type: String,
+        ref: "WebUser",
+      },
+    ],
     userData: {} // for supabase user data
   },
   {

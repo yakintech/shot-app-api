@@ -13,6 +13,8 @@ router.delete("/:id", webUserController.delete);
 router.post("/followFacibility", webUserController.followFacibility);
 router.post("/unfollowFacibility", webUserController.unFollowFacibility);
 router.get("/getBySupabaseId/:id", webUserController.getBySupabaseId);
+router.post("/follow", webUserController.followUser)
+router.post("/unfollow", webUserController.unFollowUser)
 
 
 module.exports = router;

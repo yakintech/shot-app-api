@@ -127,6 +127,7 @@ const webUserController = {
                 email: data.email,
                 userName: data.username,
                 createdAt: data.createdAt,
+                followUsers: data.followUsers,
             }
             return res.json(webUser);
         } catch (error) {
@@ -165,20 +166,80 @@ const webUserController = {
         }
     },
     confirmEmail: async (req, res) => {
-        let {id} = req.body;
+        let { id } = req.body;
         try {
             let webUser = await WebUser.findById({
                 supabaseId: id
             })
-            if(!webUser){
-                return res.status(404).json({message: "User not found"})
+            if (!webUser) {
+                return res.status(404).json({ message: "User not found" })
             }
             webUser.isConfirmed = true;
             await webUser.save();
         } catch (error) {
-            
+
         }
-    }
+    },
+    followUser: async (req, res) => {
+        try {
+            let { userId, followUserId } = req.body;
+            
+            followUserId = followUserId.toString();
+            userId = userId.toString();
+
+            var webUser = await WebUser.findOne({ supabaseId: userId });
+            if (!webUser) {
+                console.log("User not found");
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            var followUser = await WebUser.findOne({supabaseId: followUserId});
+            if (!followUser) {
+                console.log("Follow user not found");
+                return res.status(404).json({ message: "Follow user not found" });
+            }
+
+            if (webUser.followUsers.includes(followUserId)) {
+                return res.json({ id: webUser._id, message: "User is already following the user" });
+            }
+
+            webUser.followUsers.push(followUserId);
+            await webUser.save();
+            return res.json({ id: webUser._id });
+        } catch (error) {
+            console.log(`Error followUser followUserId,userId ${followUserId}, ${userId}`, error);
+            return res.status(500).json({ message: error.message });
+        }
+    },
+    unFollowUser: async (req, res) => {
+        try {
+            const { userId, followUserId } = req.body;
+            console.log("userId", userId);
+            console.log("followUserId", followUserId);
+
+            var webUser = await WebUser.findOne({ supabaseId: userId });
+            console.log("webUser", webUser);
+            if (!webUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            var followUser = await WebUser.findOne({supabaseId: followUserId});
+            console.log("followUser", followUser);
+            if (!followUser) {
+                return res.status(404).json({ message: "Follow user not found" });
+            }
+            if (!webUser.followUsers.includes(followUserId)) {
+                return res.json({ id: webUser._id, message: "User is not following the user" });
+            }
+
+            webUser.followUsers = webUser.followUsers.filter(f => f.toString() != followUserId);
+            await webUser.save();
+            return res.json({ id: webUser._id });
+        } catch (error) {
+            console.log(`Error unFollowUser followUserId,userId ${followUserId}, ${userId}`, error);
+            return res.status(500).json({ message: error.message });
+        }
+    },
 }
 
 module.exports = webUserController;
