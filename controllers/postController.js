@@ -55,3 +55,21 @@ exports.getUserPosts = async (req, res) => {
     res.status(500).json({ message: "Error fetching user posts", error });
   }
 };
+
+exports.getPostById = async (req, res) => {
+  try {
+    let posts = await Post.findOne({ _id: req.params.id })
+      .populate({
+        path: "user",
+        match: { supabaseId: { $exists: true } },
+        options: { strictPopulate: false },
+        localField: 'user',
+        foreignField: 'supabaseId'
+      })
+      .sort({ timestamp: -1 });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching all posts", error });
+  }
+}
