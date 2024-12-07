@@ -12,6 +12,9 @@ const WebUserSchema = new mongoose.Schema(
     lastName: {
       type: String,
     },
+    fullName: {
+      type: String,
+    },
     username: {
       type: String,
       // required: true,

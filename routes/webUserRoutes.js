@@ -11,6 +11,7 @@ router.post("/createWithSocial", webUserController.createWithSocial);
 router.delete("/:id", webUserController.delete);
 router.post("/followFacibility", webUserController.followFacibility);
 router.post("/unfollowFacibility", webUserController.unFollowFacibility);
+router.get("/getBySupabaseId/:id", webUserController.getBySupabaseId);
 
 
 module.exports = router;

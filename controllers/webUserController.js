@@ -29,7 +29,9 @@ const webUserController = {
                 loginType,
                 email,
                 supabaseId,
-                userData
+                userData,
+                fullName: email.split("@")[0],
+                username: email.split("@")[0],
             });
             
 
@@ -109,7 +111,24 @@ const webUserController = {
             console.log(`Error removeFavFromFacibility facibilityId,userId ${facibilityId}, ${userId}`, error);
             return res.status(500).json({ message: error.message });
         }
-    }
+    },
+    getBySupabaseId: async (req, res) => {
+        try {
+            var supabaseId = req.params.id;
+            var data = await WebUser.findOne({ supabaseId });
+            let webUser = {
+                _id: data._id,
+                id: data.supabaseId,
+                email: data.email,
+                userName: data.username,
+                createdAt: data.createdAt,
+            }
+            return res.json(webUser);
+        } catch (error) {
+            console.log(`getBySupabaseId supabaseId ${supabaseId}`, error);
+            return res.status(500).json({ message: error.message });
+        }
+    },
 }
 
 module.exports = webUserController;
