@@ -1,23 +1,34 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const FacibilitySchema = new mongoose.Schema({
+const FacibilitySchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     description: String,
     address: String,
     city: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'City'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "City",
     },
     images: [],
+    followedBy: [
+      {
+        type: String,
+        ref: "WebUser",
+      },
+    ],
+    followedCount: {
+      type: Number,
+      default: 0,
+    },
     isDeleted: {
-        type: Boolean,
-        default: false
-    }
-},
-{timestamps: true});
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
 
-
-module.exports = mongoose.model('Facibility', FacibilitySchema);
+module.exports = mongoose.model("Facibility", FacibilitySchema);

@@ -4,15 +4,13 @@ const multer = require('multer');
 const facibilityController = require('../controllers/facibilityController');
 const router = express.Router();
 
-
-const upload = multer({ storage: multer.memoryStorage() });;
-
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/", facibilityController.getAll);
 router.get("/:id", facibilityController.getOne);
-router.post("/", upload.array("files", 10),facibilityController.create);
+router.post("/", upload.array("files", 10), facibilityController.create);
 router.put("/:id", facibilityController.update);
 router.delete("/:id", facibilityController.delete);
-
+router.post("/:id/follow", facibilityController.toggleFollowFacility);
 
 module.exports = router;
