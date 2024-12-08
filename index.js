@@ -9,6 +9,7 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const authRoutes = require('./routes/authRoutes');
 const adminUserRoutes = require('./routes/adminUserRoutes');
 const facibilityRoutes = require('./routes/facibilityRoutes');
+const followedFacibilityRoutes = require('./routes/followedFacibilityRoutes');
 const webUserRoutes = require('./routes/webUserRoutes');
 const postRoutes = require('./routes/postRoutes');
 const likeRoutes = require('./routes/likeRoutes');
@@ -31,6 +32,7 @@ const PORT = process.env.PORT || 5001;
 app.use("/api/auth",authRoutes);
 app.use("/api/adminusers", adminUserRoutes)
 app.use("/api/facibilities", facibilityRoutes);
+app.use("/api/favourite-facibilities", followedFacibilityRoutes);
 app.use("/api/webUsers", webUserRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/likes', likeRoutes);

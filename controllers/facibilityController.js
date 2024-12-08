@@ -13,7 +13,10 @@ const facibilityController = {
   getOne: async (req, res) => {
     try {
       const id = req.params.id;
-      const data = await Facibility.findOne({ _id: id, isDeleted: false }).populate("city");
+      const data = await Facibility.findOne({
+        _id: id,
+        isDeleted: false,
+      }).populate("city");
       return res.json(data);
     } catch (error) {
       return res.status(500).json({ message: error.message });
@@ -64,39 +67,62 @@ const facibilityController = {
       return res.status(500).json({ message: error.message });
     }
   },
-  toggleFollowFacility: async (req, res) => {
+  toggleFollowFacibility: async (req, res) => {
     const { id } = req.params;
     const { userId, action } = req.body;
 
     try {
-      const facility = await Facibility.findById(id);
+      const facibility = await Facibility.findById(id);
 
-      if (!facility) {
-        return res.status(404).json({ message: "Facility not found" });
+      if (!facibility) {
+        return res.status(404).json({ message: "Facibility not found" });
       }
 
       if (action) {
-        if (facility.followedBy.includes(userId)) {
-          return res.status(400).json({ message: "User already following this facility" });
+        if (facibility.followedBy.includes(userId)) {
+          return res
+            .status(400)
+            .json({ message: "User already following this facibility" });
         }
 
-        facility.followedBy.push(userId);
+        facibility.followedBy.push(userId);
       } else if (!action) {
-        if (!facility.followedBy.includes(userId)) {
-          return res.status(400).json({ message: "User is not following this facility" });
+        if (!facibility.followedBy.includes(userId)) {
+          return res
+            .status(400)
+            .json({ message: "User is not following this facibility" });
         }
 
-        facility.followedBy = facility.followedBy.filter((id) => id !== userId);
+        facibility.followedBy = facibility.followedBy.filter(
+          (id) => id !== userId
+        );
       }
 
-      facility.followedCount = facility.followedBy.length;
+      facibility.followedCount = facibility.followedBy.length;
 
-      await facility.save();
+      await facibility.save();
 
       return res.status(200).json({
-        message: `Facility ${action ? "followed" : "unfollowed"} successfully`,
-        facility,
+        message: `Facibility ${
+          action ? "followed" : "unfollowed"
+        } successfully`,
+        facibility,
       });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "An error occurred", error });
+    }
+  },
+
+  getFollowedFacilities: async (req, res) => {
+    const { userId } = req.body;
+    try {
+      const followedFacilities = await Facibility.find({
+        followedBy: userId,
+        isDeleted: false,
+      }).populate("city");
+
+      return res.status(200).json(followedFacilities);
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "An error occurred", error });
