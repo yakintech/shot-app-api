@@ -32,7 +32,7 @@ const PORT = process.env.PORT || 5001;
 app.use("/api/auth",authRoutes);
 app.use("/api/adminusers", adminUserRoutes)
 app.use("/api/facibilities", facibilityRoutes);
-app.use("/api/favourite-facibilities", followedFacibilityRoutes);
+app.use("/api/followed-facibilities", followedFacibilityRoutes);
 app.use("/api/webUsers", webUserRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/likes', likeRoutes);
