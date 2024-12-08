@@ -114,7 +114,7 @@ const facibilityController = {
     }
   },
 
-  getFollowedFacilities: async (req, res) => {
+  getFollowedFacibilities: async (req, res) => {
     const { userId } = req.body;
     try {
       const followedFacilities = await Facibility.find({
